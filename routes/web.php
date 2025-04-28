@@ -32,7 +32,7 @@ Route::get('/my-orders/{order}/invoice', [CustomerOrderController::class, 'downl
     ->name('orders.invoice');
 
 // for chart js
-Route::get('/admin/chart', [DashboardController::class, 'chart'])->name('admin.chart');
+// Route::get('/admin/chart', [DashboardController::class, 'chart'])->name('admin.chart');
 // Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
 
