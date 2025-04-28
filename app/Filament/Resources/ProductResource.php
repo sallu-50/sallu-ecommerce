@@ -3,17 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\{TextInput, Select, Textarea, FileUpload, RichEditor};
-use Filament\Tables\Columns\{TextColumn, ImageColumn};
+use Filament\Forms\Components\{TextInput, Select, Textarea, FileUpload, RichEditor, Toggle};
+use Filament\Tables\Columns\{TextColumn, ImageColumn, BooleanColumn};
 use App\Filament\Resources\ProductResource\Pages\ListProducts;
 
 class ProductResource extends Resource
@@ -32,6 +29,7 @@ class ProductResource extends Resource
                     ->required(),
 
                 TextInput::make('name')
+                    ->label('Brand Name')
                     ->required()
                     ->maxLength(255),
 
@@ -41,9 +39,23 @@ class ProductResource extends Resource
                     ->numeric()
                     ->required(),
 
+                TextInput::make('discount_price')
+                    ->numeric()
+                    ->nullable()
+                    ->label('Discount Price'),
+
                 TextInput::make('stock')
                     ->numeric()
                     ->default(0),
+
+                Toggle::make('is_featured')
+                    ->label('Featured Product')
+                    ->default(false),
+
+                TextInput::make('sold')
+                    ->numeric()
+                    ->default(0)
+                    ->label('Sold Count'),
 
                 FileUpload::make('image')
                     ->image()
@@ -62,9 +74,11 @@ class ProductResource extends Resource
                 TextColumn::make('category.name')->label('Category'),
                 TextColumn::make('price')->money('bdt'),
                 TextColumn::make('stock'),
+                BooleanColumn::make('is_featured')->label('Featured'),
+                TextColumn::make('sold')->label('Sold Count'),
             ])
             ->filters([
-                //
+                // Add any filters here if needed
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -79,7 +93,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Add any relations here if needed
         ];
     }
 

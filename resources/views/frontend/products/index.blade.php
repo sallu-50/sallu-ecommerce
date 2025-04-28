@@ -1,11 +1,66 @@
 @extends('layouts.app')
 
 @section('content')
+    <!-- Featured Products Section -->
     <div class="max-w-7xl mx-auto py-6">
-        <h1 class="text-2xl font-bold mb-4">All Products</h1>
+        <h1 class="text-2xl font-bold mb-4">🌟 Featured Products</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
+            @foreach ($featuredProducts as $product)
+                <div class="border p-4 rounded-xl shadow hover:shadow-lg transition relative">
+                    @if ($product->discount_price)
+                        <div class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                            {{ round(100 - ($product->discount_price / $product->price) * 100) }}% OFF
+                        </div>
+                    @endif
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @foreach ($products as $product)
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                        class="h-48 w-full object-cover rounded">
+                    <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
+                    <p class="text-gray-600">
+                        ৳{{ $product->discount_price ?? $product->price }}
+                        @if ($product->discount_price)
+                            <span class="line-through text-red-500 text-sm">৳{{ $product->price }}</span>
+                        @endif
+                    </p>
+                    <a href="{{ route('product.show', $product->id) }}"
+                        class="mt-2 inline-block text-blue-600 hover:underline">View Details</a>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Category Wise Products -->
+    @foreach ($categories as $category)
+        <div class="max-w-7xl mx-auto py-6">
+            <h1 class="text-2xl font-bold mb-4">{{ $category->name }}</h1>
+
+            @if ($category->products->count() > 0)
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
+                    @foreach ($category->products as $product)
+                        <div class="border p-4 rounded-xl shadow hover:shadow-lg transition">
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                                class="h-48 w-full object-cover rounded">
+                            <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
+                            <p class="text-gray-600">৳{{ $product->price }}</p>
+                            <a href="{{ route('product.show', $product->id) }}"
+                                class="mt-2 inline-block text-blue-600 hover:underline">View Details</a>
+                        </div>
+                    @endforeach
+                </div>
+                <a href="{{ route('category.show', $category->id) }}" class="inline-block text-blue-500 hover:underline">
+                    See All {{ $category->name }}
+                </a>
+            @else
+                <p class="text-gray-500">No products available in this category.</p>
+            @endif
+        </div>
+    @endforeach
+
+    <!-- Best Selling Products -->
+    <div class="max-w-7xl mx-auto py-6">
+        <h1 class="text-2xl font-bold mb-4">🔥 Best Selling</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
+            @foreach ($bestSellingProducts as $product)
                 <div class="border p-4 rounded-xl shadow hover:shadow-lg transition">
                     <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                         class="h-48 w-full object-cover rounded">
@@ -16,9 +71,22 @@
                 </div>
             @endforeach
         </div>
+    </div>
 
-        <div class="mt-6">
-            {{ $products->links() }}
+    <!-- New Arrivals -->
+    <div class="max-w-7xl mx-auto py-6">
+        <h1 class="text-2xl font-bold mb-4">🆕 New Arrivals</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-10">
+            @foreach ($newArrivals as $product)
+                <div class="border p-4 rounded-xl shadow hover:shadow-lg transition">
+                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                        class="h-48 w-full object-cover rounded">
+                    <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
+                    <p class="text-gray-600">৳{{ $product->price }}</p>
+                    <a href="{{ route('product.show', $product->id) }}"
+                        class="mt-2 inline-block text-blue-600 hover:underline">View Details</a>
+                </div>
+            @endforeach
         </div>
     </div>
 @endsection

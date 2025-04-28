@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->text('description')->nullable();
+            $table->text('description');
             $table->decimal('price', 10, 2);
-            $table->integer('stock')->default(0);
-            $table->string('image')->nullable();
+            $table->integer('stock');
+            $table->string('image');
+            $table->boolean('is_featured')->default(false);
+            $table->integer('sold')->default(0);
+            $table->decimal('discount_price', 10, 2)->nullable();
             $table->timestamps();
         });
     }
