@@ -15,18 +15,26 @@ Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::get('category/{id}', [CategoryController::class, 'show'])->name('category.show');
 
+// Cart Routes
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
 Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
+// Product Filter
+Route::get('/products', [ProductController::class, 'filter'])->name('filter.index');
+
+
+
+// Protected Routes (Login required)
 Route::middleware(['auth'])->group(function () {
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
     Route::get('/my-orders', [CustomerOrderController::class, 'index'])->name('orders.index');
-});
-Route::middleware('auth')->group(function () {
+    Route::get('/my-orders/{order}/invoice', [CustomerOrderController::class, 'downloadInvoice'])->name('orders.invoice');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 });
 // for invoice
 Route::get('/my-orders/{order}/invoice', [CustomerOrderController::class, 'downloadInvoice'])

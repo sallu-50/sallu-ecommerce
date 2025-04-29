@@ -23,22 +23,30 @@
                         @endphp
                         <tr class="border-b">
                             <td class="p-2">{{ $item['name'] }}</td>
-                            <td class="p-2">৳{{ $item['price'] }}</td>
+                            <td class="p-2">৳{{ number_format($item['price'], 2) }}</td>
                             <td class="p-2">{{ $item['quantity'] }}</td>
-                            <td class="p-2">৳{{ $subtotal }}</td>
+                            <td class="p-2">৳{{ number_format($subtotal, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
 
             <div class="mt-4 text-right font-semibold">
-                Total: ৳{{ $total }}
+                Total: ৳{{ number_format($total, 2) }}
             </div>
 
-            <form method="POST" action="{{ route('checkout') }}" class="mt-4 text-right">
+            <!-- Address Form for Checkout -->
+            <form method="POST" action="{{ route('checkout') }}" class="mt-4 text-left">
                 @csrf
-                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Place
-                    Order</button>
+                <div class="mb-4">
+                    <label for="address" class="  font-semibold">Shipping Address</label>
+                    <input type="text" name="address" id="address" class="w-full p-2 border border-gray-300 rounded"
+                        required />
+                </div>
+
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    Place Order
+                </button>
             </form>
         @else
             <p>Your cart is empty.</p>

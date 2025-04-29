@@ -24,12 +24,13 @@ class CustomerOrderController extends Controller
         // $orders = auth()->user()->orders()->with('items.product')->latest()->get();
 
 
-        $orders = Order::with('items.product', 'user') // user load korchi
+        $orders = Order::with('items.product', 'user')
             ->where('user_id', auth()->id())
             ->latest()
             ->get();
 
         return view('frontend.orders.index', compact('orders'));
+
 
 
 

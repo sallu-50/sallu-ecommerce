@@ -12,9 +12,11 @@
                         <p><strong>Customer:</strong> {{ $order->user->name }}</p>
                         <p><strong>Status:</strong> {{ ucfirst($order->status) }}</p>
                         <p><strong>Order Date:</strong> {{ $order->created_at->format('M d, Y') }}</p>
+                        <p><strong>Shipping Address:</strong> {{ $order->address }}</p>
                     </div>
-                    <div class="text-green-600 font-semibold">৳{{ $order->total_amount }}</div>
+                    <div class="text-green-600 font-semibold">৳{{ number_format($order->total, 2) }}</div>
                 </div>
+
 
                 <div class="mt-3 space-y-1 text-sm text-gray-700">
                     <h1 class="mt-3 font-semibold">Products:</h1>
