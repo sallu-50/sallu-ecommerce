@@ -108,6 +108,55 @@
         </main>
 
     </main>
+    <footer class="bg-gray-900 text-gray-300 pt-10 pb-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <!-- Logo & About -->
+            <div>
+                <h2 class="text-white text-xl font-bold mb-2">🛍️ Sallu's Shop</h2>
+                <p class="text-sm">Best deals on fashion, electronics, and more. Shop smart, live better.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-white font-semibold mb-2">Quick Links</h3>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="#" class="hover:text-white transition">Home</a></li>
+                    <li><a href="#" class="hover:text-white transition">Shop</a></li>
+                    <li><a href="#" class="hover:text-white transition">Cart</a></li>
+                    <li><a href="#" class="hover:text-white transition">Orders</a></li>
+                </ul>
+            </div>
+
+            <!-- Customer Service -->
+            <div>
+                <h3 class="text-white font-semibold mb-2">Customer Service</h3>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-white transition">FAQs</a></li>
+                    <li><a href="#" class="hover:text-white transition">Return Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h3 class="text-white font-semibold mb-2">Get in Touch</h3>
+                <p class="text-sm">Email: salmanabdullahal0@gmail.com</p>
+                <p class="text-sm">Phone: +880 1324869686</p>
+                <div class="flex space-x-3 mt-3">
+                    <a href="#" class="hover:text-white"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="border-t border-gray-700 mt-8 pt-4 text-center text-sm text-gray-500">
+            © {{ date('Y') }} Sallu. All rights reserved.
+        </div>
+    </footer>
+
 
 
     <script>
