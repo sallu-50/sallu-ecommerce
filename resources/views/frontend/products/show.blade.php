@@ -23,7 +23,7 @@
                         <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
                             class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-8 h-8 rounded-r focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">+</button>
                     </div>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add to Cart</button>
+                    <button type="button" onclick="addToCart({{ $product->id }}, this.parentNode.querySelector('input[name=quantity]').value)" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add to Cart</button>
                 </form>
 
                 @auth

@@ -38,6 +38,10 @@
                 <p class="text-gray-600">৳{{ $product->price }}</p>
                 <a href="{{ route('product.show', $product->id) }}"
                     class="mt-2 inline-block text-blue-600 hover:underline">View Details</a>
+                <div class="mt-2 flex items-center space-x-2">
+                    <input type="number" id="quantity-{{ $product->id }}" value="1" min="1" class="border rounded p-1 w-16 text-center">
+                    <button onclick="addToCart({{ $product->id }}, document.getElementById('quantity-{{ $product->id }}').value)" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
+                </div>
             </div>
         @empty
             <p>No products found.</p>

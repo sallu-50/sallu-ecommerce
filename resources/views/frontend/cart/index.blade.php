@@ -12,6 +12,7 @@
                         <th class="p-2">Price</th>
                         <th class="p-2">Quantity</th>
                         <th class="p-2">Subtotal</th>
+                        <th class="p-2">Actions</th> <!-- New column -->
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,10 @@
                                 </div>
                             </td>
                             <td class="p-2">৳{{ number_format($subtotal, 2) }}</td>
+                            <td class="p-2">
+                                <button type="button" onclick="updateCartQuantity({{ $productId }}, 0)"
+                                    class="text-red-500 hover:text-red-700 text-sm">Remove</button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -55,6 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->canAccessPanel(fn (): bool => auth()->user()->is_admin);
     }
 }

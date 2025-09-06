@@ -13,8 +13,7 @@
                         </div>
                     @endif
 
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
-                        class="h-48 w-full object-cover rounded">
+                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-48 w-full object-cover rounded">
                     <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
                     <p class="text-gray-600">
                         ৳{{ $product->discount_price ?? $product->price }}
@@ -23,7 +22,8 @@
                         @endif
                     </p>
                     <div class="mt-2 flex items-center justify-between">
-                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View Details</a>
+                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View
+                            Details</a>
                         <div>
                             <button onclick="addToCart({{ $product->id }})" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
                             @auth
@@ -62,18 +62,22 @@
                             <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
                             <p class="text-gray-600">৳{{ $product->price }}</p>
                             <div class="mt-2 flex items-center justify-between">
-                                <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View Details</a>
+                                <a href="{{ route('product.show', $product->id) }}"
+                                    class="text-blue-600 hover:underline">View Details</a>
                                 <div>
                                     <button onclick="addToCart({{ $product->id }})" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
                                     @auth
                                         @if ($product->isWishlisted())
-                                            <form class="inline" method="POST" action="{{ route('wishlist.destroy', $product) }}">
+                                            <form class="inline" method="POST"
+                                                action="{{ route('wishlist.destroy', $product) }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" title="Remove from Wishlist" class="text-red-500">♥</button>
+                                                <button type="submit" title="Remove from Wishlist"
+                                                    class="text-red-500">♥</button>
                                             </form>
                                         @else
-                                            <form class="inline" method="POST" action="{{ route('wishlist.store', $product) }}">
+                                            <form class="inline" method="POST"
+                                                action="{{ route('wishlist.store', $product) }}">
                                                 @csrf
                                                 <button type="submit" title="Add to Wishlist" class="text-gray-400">♡</button>
                                             </form>
@@ -104,7 +108,8 @@
                     <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
                     <p class="text-gray-600">৳{{ $product->price }}</p>
                     <div class="mt-2 flex items-center justify-between">
-                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View Details</a>
+                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View
+                            Details</a>
                         <div>
                             <button onclick="addToCart({{ $product->id }})" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
                             @auth
@@ -139,7 +144,8 @@
                     <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
                     <p class="text-gray-600">৳{{ $product->price }}</p>
                     <div class="mt-2 flex items-center justify-between">
-                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View Details</a>
+                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View
+                            Details</a>
                         <div>
                             <button onclick="addToCart({{ $product->id }})" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
                             @auth

@@ -17,8 +17,8 @@
                             <form action="{{ route('cart.add') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Add to Cart</button>
+                                <input type="number" id="quantity-{{ $product->id }}" value="1" min="1" class="border rounded p-1 w-16 text-center">
+                                <button type="button" onclick="addToCart({{ $product->id }}, document.getElementById('quantity-{{ $product->id }}').value)" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">Add to Cart</button>
                             </form>
                             @auth
                                 @if ($product->isWishlisted())
