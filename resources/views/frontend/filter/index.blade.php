@@ -32,7 +32,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @forelse ($products as $product)
             <div class="border p-4 rounded-xl shadow hover:shadow-lg transition">
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                     class="h-48 w-full object-cover rounded">
                 <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
                 <p class="text-gray-600">৳{{ $product->price }}</p>

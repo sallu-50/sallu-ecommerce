@@ -49,4 +49,13 @@ class CustomerOrderController extends Controller
 
         return $pdf->download('invoice_order_' . $order->id . '.pdf');
     }
+
+    public function showConfirmation(Order $order)
+    {
+        // Ensure the order belongs to the authenticated user
+        if ($order->user_id !== auth()->id()) {
+            abort(403); // Forbidden
+        }
+        return view('frontend.orders.confirmation', compact('order'));
+    }
 }

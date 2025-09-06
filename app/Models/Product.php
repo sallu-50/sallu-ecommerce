@@ -30,4 +30,9 @@ class Product extends Model
     {
         return auth()->check() && auth()->user()->wishlistProducts()->where('product_id', $this->id)->exists();
     }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? asset('storage/' . $this->image) : asset('storage/placeholders/no_image.png');
+    }
 }

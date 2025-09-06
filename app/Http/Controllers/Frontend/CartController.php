@@ -34,9 +34,15 @@ class CartController extends Controller
 
         session()->put('cart', $cart);
 
+        // Calculate total quantity of items in cart
+        $totalQuantity = 0;
+        foreach ($cart as $item) {
+            $totalQuantity += $item['quantity'];
+        }
+
         return response()->json([
             'status' => 'success',
-            'cart_count' => count($cart),
+            'cart_count' => $totalQuantity,
             'cart_items' => $cart,
         ]);
     }
@@ -59,7 +65,7 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            return back()->with('error', 'Your cart is empty.');
+            return back()->with('error_message', 'Your cart is empty.');
         }
 
         $request->validate([
@@ -92,10 +98,10 @@ class CartController extends Controller
             DB::commit();
             session()->forget(['cart', 'coupon']);
 
-            return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
+            return redirect()->route('orders.confirmation', $order->id)->with('success_message', 'Order placed successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Something went wrong. Please try again.');
+            return back()->with('error_message', 'Something went wrong. Please try again.');
         }
     }
 
@@ -120,5 +126,61 @@ class CartController extends Controller
             'discount' => $discount,
             'finalTotal' => $finalTotal > 0 ? $finalTotal : 0,
         ];
+    }
+
+    public function clear()
+    {
+        session()->forget('cart');
+        session()->forget('coupon'); // Also clear coupon if present
+        return back()->with('success_message', 'Your cart has been cleared.');
+    }
+
+    public function updateQuantity(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:0',
+        ]);
+
+        $cart = session()->get('cart', []);
+        $productId = $request->product_id;
+        $quantity = $request->quantity;
+
+        if ($quantity === 0) {
+            unset($cart[$productId]);
+        } else {
+            if (isset($cart[$productId])) {
+                $cart[$productId]['quantity'] = $quantity;
+            } else {
+                // This case should ideally not happen if update is only for existing items
+                // But if it does, we can add the product
+                $product = Product::find($productId);
+                if ($product) {
+                    $cart[$productId] = [
+                        'name' => $product->name,
+                        'quantity' => $quantity,
+                        'price' => $product->price,
+                    ];
+                }
+            }
+        }
+
+        session()->put('cart', $cart);
+
+        // Recalculate totals and cart count
+        $totals = $this->getCartTotals($cart);
+        $totalQuantity = 0;
+        foreach ($cart as $item) {
+            $totalQuantity += $item['quantity'];
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'cart_items' => $cart,
+            'cart_count' => $totalQuantity,
+            'subtotal' => $totals['subtotal'],
+            'discount' => $totals['discount'],
+            'newTotal' => $totals['finalTotal'],
+        ]);
     }
 }

@@ -9,7 +9,7 @@
                 @foreach ($products as $product)
                     <div class="border rounded-lg p-4 text-center">
                         <a href="{{ route('product.show', $product->id) }}">
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full h-48 object-cover rounded-md mb-4">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-48 object-cover rounded-md mb-4">
                             <h2 class="font-semibold">{{ $product->name }}</h2>
                             <p class="text-green-600 font-bold">৳{{ $product->price }}</p>
                         </a>
@@ -43,8 +43,9 @@
                 {{ $products->appends(request()->input())->links() }}
             </div>
         @else
-            <p>No products found matching your search criteria.</p>
-            <a href="{{ route('home') }}" class="text-blue-600 underline mt-4 inline-block">Continue Shopping</a>
-        @endif
+            <div class="text-center py-10">
+                <p class="text-lg text-gray-600 mb-4">No products found matching your search criteria.</p>
+                <a href="{{ route('filter.index') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 text-lg">Continue Shopping</a>
+            </div>
     </div>
 @endsection

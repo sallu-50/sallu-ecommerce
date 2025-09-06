@@ -20,6 +20,6 @@ class ReviewController extends Controller
             'comment' => $request->comment,
         ]);
 
-        return back()->with('success', 'Thank you for your review!');
+        return back()->with('success_message', 'Thank you for your review!');
     }
 }

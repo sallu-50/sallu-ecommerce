@@ -19,15 +19,15 @@ class WishlistController extends Controller
 
         if (!$wishlist->where('product_id', $product->id)->exists()) {
             $wishlist->attach($product->id);
-            return back()->with('success', 'Product added to wishlist!');
+            return back()->with('success_message', 'Product added to wishlist!');
         }
 
-        return back()->with('info', 'Product is already in your wishlist.');
+        return back()->with('success_message', 'Product is already in your wishlist.');
     }
 
     public function destroy(Product $product)
     {
         auth()->user()->wishlistProducts()->detach($product->id);
-        return back()->with('success', 'Product removed from wishlist.');
+        return back()->with('success_message', 'Product removed from wishlist.');
     }
 }

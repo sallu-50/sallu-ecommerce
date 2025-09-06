@@ -37,7 +37,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m5-9v9m6-9v9m2-13a1 1 0 100-2 1 1 0 000 2z" />
                 </svg>
-                View Cart
+                View Cart <span id="cart-count" class="ml-1 px-2 py-0.5 bg-white text-green-600 rounded-full text-xs font-bold">0</span>
             </a>
 
 
@@ -130,6 +130,8 @@
         </main>
 
     </main>
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
     <footer class="bg-gray-900 text-gray-300 pt-10 pb-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             <!-- Logo & About -->
@@ -182,6 +184,19 @@
 
 
     <script>
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-3 rounded-md shadow-md text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
+            toast.textContent = message;
+
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000); // Remove toast after 3 seconds
+        }
+
         function addToCart(productId, quantity = 1) {
             fetch("{{ route('cart.add') }}", {
                     method: "POST",
@@ -198,13 +213,15 @@
                 .then(data => {
                     console.log(data); // Debug
                     if (data.status === 'success') {
-                        updateSideCartUI(data.cart_items);
+                        updateSideCartUI(data);
+                        showToast('Product added to cart!', 'success');
                     } else {
-                        alert('Something went wrong.');
+                        showToast('Something went wrong.', 'error');
                     }
                 })
                 .catch(error => {
                     console.error("Cart error:", error);
+                    showToast('An error occurred while adding to cart.', 'error');
                 });
         }
 
@@ -212,16 +229,16 @@
             document.getElementById('side-cart').classList.add('hidden');
         }
 
-        function updateSideCartUI(cartItems) {
+        function updateSideCartUI(data) {
             const container = document.getElementById('side-cart-items');
-            // console.log(document.getElementById('side-cart-items'));
+            const cartCountSpan = document.getElementById('cart-count');
 
             container.innerHTML = '';
 
             let total = 0;
 
-            for (let key in cartItems) {
-                const item = cartItems[key];
+            for (let key in data.cart_items) {
+                const item = data.cart_items[key];
                 const subtotal = item.price * item.quantity;
                 total += subtotal;
 
@@ -233,9 +250,23 @@
                 `;
             }
 
+            console.log('Calculated total:', total); // Debugging line
+
             document.getElementById('side-cart-total').innerText = `Total: ৳${total.toFixed(2)}`;
             document.getElementById('side-cart').classList.remove('hidden');
+            cartCountSpan.innerText = data.cart_count;
         }
+
+        // Display flashed messages as toasts on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            @if (session('success_message'))
+                showToast('{{ session('success_message') }}', 'success');
+            @endif
+
+            @if (session('error_message'))
+                showToast('{{ session('error_message') }}', 'error');
+            @endif
+        });
     </script>
 
 
@@ -294,5 +325,7 @@
 
     @stack('scripts')
 </body>
+
+</html>
 
 </html>

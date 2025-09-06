@@ -3,7 +3,7 @@
 @section('content')
     <div class="max-w-4xl mx-auto py-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-full rounded-xl shadow">
+            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full rounded-xl shadow">
         </div>
 
         <div>
@@ -15,7 +15,14 @@
                 <form method="POST" action="{{ route('cart.add') }}" class="space-y-2">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <input type="number" name="quantity" value="1" min="1" class="border rounded p-2 w-20">
+                    <div class="flex items-center border rounded p-1 w-32">
+                        <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                            class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-8 h-8 rounded-l focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">-</button>
+                        <input type="number" name="quantity" value="1" min="1"
+                            class="w-full text-center bg-transparent focus:outline-none" readonly>
+                        <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                            class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-8 h-8 rounded-r focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">+</button>
+                    </div>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add to Cart</button>
                 </form>
 
@@ -69,10 +76,16 @@
                             <option value="2">2 - Fair</option>
                             <option value="1">1 - Poor</option>
                         </select>
+                        @error('rating')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="mb-4">
                         <label for="comment" class="block mb-1">Your Comment</label>
                         <textarea name="comment" id="comment" rows="4" class="border rounded p-2 w-full" required></textarea>
+                        @error('comment')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Submit Review</button>
                 </form>

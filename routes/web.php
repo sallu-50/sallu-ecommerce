@@ -27,6 +27,8 @@ Route::get('/search', [ProductController::class, 'search'])->name('search.index'
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
 Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
+Route::post('/cart/update-quantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 Route::get('/cart/json', function () {
     return response()->json([
         'cart_items' => session('cart', []),
@@ -48,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/my-orders', [CustomerOrderController::class, 'index'])->name('orders.index');
     Route::get('/my-orders/{order}/invoice', [CustomerOrderController::class, 'downloadInvoice'])->name('orders.invoice');
+    Route::get('/orders/{order}/confirmation', [CustomerOrderController::class, 'showConfirmation'])->name('orders.confirmation');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

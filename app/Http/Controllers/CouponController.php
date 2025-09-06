@@ -15,11 +15,11 @@ class CouponController extends Controller
         $coupon = Coupon::where('code', $request->code)->first();
 
         if (!$coupon) {
-            return back()->with('error', 'Invalid coupon code.');
+            return back()->with('error_message', 'Invalid coupon code.');
         }
 
         if ($coupon->expires_at && $coupon->expires_at < Carbon::now()) {
-            return back()->with('error', 'Coupon has expired.');
+            return back()->with('error_message', 'Coupon has expired.');
         }
 
         // Store the valid coupon in the session
@@ -29,12 +29,12 @@ class CouponController extends Controller
             'value' => $coupon->type === 'fixed' ? $coupon->value : $coupon->percent_off,
         ]);
 
-        return back()->with('success', 'Coupon applied successfully!');
+        return back()->with('success_message', 'Coupon applied successfully!');
     }
 
     public function destroy()
     {
         session()->forget('coupon');
-        return back()->with('success', 'Coupon removed.');
+        return back()->with('success_message', 'Coupon removed.');
     }
 }
