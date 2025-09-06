@@ -16,7 +16,7 @@
                 </thead>
                 <tbody>
                     @php $total = 0; @endphp
-                    @foreach ($cart as $item)
+                    @foreach ($cart as $productId => $item)
                         @php
                             $subtotal = $item['price'] * $item['quantity'];
                             $total += $subtotal;
@@ -26,11 +26,11 @@
                             <td class="p-2">৳{{ number_format($item['price'], 2) }}</td>
                             <td class="p-2">
                                 <div class="flex items-center border rounded p-1 w-24 mx-auto">
-                                    <button type="button" onclick="updateCartQuantity({{ $item['id'] }}, -1)"
+                                    <button type="button" onclick="updateCartQuantity({{ $productId }}, -1)"
                                         class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-6 h-6 rounded-l focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">-</button>
                                     <input type="number" value="{{ $item['quantity'] }}" min="1"
                                         class="w-full text-center bg-transparent focus:outline-none" readonly>
-                                    <button type="button" onclick="updateCartQuantity({{ $item['id'] }}, 1)"
+                                    <button type="button" onclick="updateCartQuantity({{ $productId }}, 1)"
                                         class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-6 h-6 rounded-r focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">+</button>
                                 </div>
                             </td>

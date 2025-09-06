@@ -40,6 +40,7 @@
                 </div>
 
                 <button type="submit" class="bg-blue-600 text-white rounded p-2 w-full hover:bg-blue-700">Apply Filters</button>
+                <button type="button" onclick="clearFilters()" class="mt-2 bg-gray-300 text-gray-700 rounded p-2 w-full hover:bg-gray-400">Clear Filters</button>
             </form>
         </aside>
 
@@ -110,6 +111,12 @@
                 .catch(error => console.error('Error fetching paginated products:', error));
             }
         });
+
+        function clearFilters() {
+            const filterForm = document.getElementById('filter-form');
+            filterForm.reset(); // Reset all form fields
+            updateProducts(); // Trigger product update with empty filters
+        }
     });
 </script>
 @endpush

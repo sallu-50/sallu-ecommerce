@@ -69,7 +69,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image')->label('Image')->circular(),
+                ImageColumn::make('image')->label('Image')->circular()->defaultImageUrl(asset('storage/placeholders/no_image.png')),
                 TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('category.name')->label('Category'),
                 TextColumn::make('price')->money('bdt'),
