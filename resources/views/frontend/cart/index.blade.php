@@ -31,8 +31,35 @@
                 </tbody>
             </table>
 
-            <div class="mt-4 text-right font-semibold">
-                Total: ৳{{ number_format($total, 2) }}
+            <!-- Coupon Form -->
+            <div class="mt-6 max-w-sm">
+                <h2 class="text-lg font-semibold mb-2">Have a Coupon?</h2>
+                @if (session()->has('coupon'))
+                    <div class="flex justify-between items-center bg-green-100 p-2 rounded">
+                        <span>Coupon Applied: <span class="font-bold">{{ session('coupon')['code'] }}</span></span>
+                        <form action="{{ route('coupon.destroy') }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-500 text-sm hover:underline">Remove</button>
+                        </form>
+                    </div>
+                @else
+                    <form action="{{ route('coupon.store') }}" method="POST" class="flex">
+                        @csrf
+                        <input type="text" name="code" placeholder="Enter coupon code" class="border rounded-l p-2 w-full" required>
+                        <button type="submit" class="bg-blue-600 text-white px-4 rounded-r hover:bg-blue-700">Apply</button>
+                    </form>
+                @endif
+            </div>
+
+            <div class="mt-4 text-right font-semibold space-y-1">
+                <p>Subtotal: ৳{{ number_format($total, 2) }}</p>
+                @if (session()->has('coupon'))
+                    <p class="text-green-600">Discount: - ৳{{ number_format($discount, 2) }}</p>
+                    <p class="text-xl">Total: ৳{{ number_format($newTotal, 2) }}</p>
+                @else
+                    <p class="text-xl">Total: ৳{{ number_format($total, 2) }}</p>
+                @endif
             </div>
 
             <!-- Address Form for Checkout -->

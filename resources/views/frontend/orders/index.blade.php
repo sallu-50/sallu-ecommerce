@@ -30,7 +30,6 @@
                 </div>
                 <h1 class="mt-3 font-semibold">Description:</h1>
                 <div> {{ $item->product->description }}</div>
-                <p class="font-semibold">Status: {{ $order->status }}</p>
 
 
 

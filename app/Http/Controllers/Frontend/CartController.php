@@ -21,21 +21,37 @@ class CartController extends Controller
 
         $cart = session()->get('cart', []);
 
-        $cart[$product->id] = [
-            'name' => $product->name,
-            'quantity' => $request->quantity,
-            'price' => $product->price,
-        ];
+        // If already added, increase quantity
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['quantity'] += $request->quantity;
+        } else {
+            $cart[$product->id] = [
+                'name' => $product->name,
+                'quantity' => $request->quantity,
+                'price' => $product->price,
+            ];
+        }
 
         session()->put('cart', $cart);
 
-        return redirect()->route('cart.view')->with('success', 'Product added to cart.');
+        return response()->json([
+            'status' => 'success',
+            'cart_count' => count($cart),
+            'cart_items' => $cart,
+        ]);
     }
 
     public function view()
     {
         $cart = session('cart', []);
-        return view('frontend.cart.index', compact('cart'));
+        $totals = $this->getCartTotals($cart);
+
+        return view('frontend.cart.index', [
+            'cart' => $cart,
+            'total' => $totals['subtotal'],
+            'discount' => $totals['discount'],
+            'newTotal' => $totals['finalTotal'],
+        ]);
     }
 
     public function checkout(Request $request)
@@ -50,10 +66,8 @@ class CartController extends Controller
             'address' => 'required|string|max:255',
         ]);
 
-        // Check if the address is received
-        // dd($request->address);
-
         $user = auth()->user();
+        $totals = $this->getCartTotals($cart);
 
         DB::beginTransaction();
 
@@ -61,7 +75,7 @@ class CartController extends Controller
             // Order Creation
             $order = Order::create([
                 'user_id' => $user->id,
-                'total' => collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']),
+                'total' => $totals['finalTotal'], // Save the final discounted total
                 'address' => $request->address, // Save Address
                 'status' => 'pending',
             ]);
@@ -76,13 +90,35 @@ class CartController extends Controller
             }
 
             DB::commit();
-            session()->forget('cart');
+            session()->forget(['cart', 'coupon']);
 
             return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
-            // dd($e);
             return back()->with('error', 'Something went wrong. Please try again.');
         }
+    }
+
+    private function getCartTotals(array $cart): array
+    {
+        $subtotal = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+        $discount = 0;
+
+        if (session()->has('coupon')) {
+            $coupon = session('coupon');
+            if ($coupon['type'] === 'fixed') {
+                $discount = $coupon['value'];
+            } elseif ($coupon['type'] === 'percent') {
+                $discount = ($subtotal * $coupon['value']) / 100;
+            }
+        }
+
+        $finalTotal = $subtotal - $discount;
+
+        return [
+            'subtotal' => $subtotal,
+            'discount' => $discount,
+            'finalTotal' => $finalTotal > 0 ? $finalTotal : 0,
+        ];
     }
 }

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>E-commerce</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -87,6 +89,26 @@
             <!-- Active filters will be injected here -->
         </div>
     </div>
+    <!-- Side Cart -->
+    <div id="side-cart" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg border-l p-4 z-50 hidden">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold">Cart</h2>
+            <button onclick="closeSideCart()"
+                class="text-gray-500 hover:text-red-600 text-2xl font-bold">&times;</button>
+        </div>
+
+        <ul id="side-cart-items" class="space-y-2 overflow-y-auto max-h-[60vh] pr-2">
+            <!-- JS will populate this -->
+        </ul>
+
+        <div class="mt-4 font-semibold" id="side-cart-total">Total: ৳0.00</div>
+
+        <a href="{{ route('cart.view') }}"
+            class="block mt-4 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            View Cart
+        </a>
+    </div>
+
 
 
     <main class="px-4">
@@ -160,6 +182,64 @@
 
 
     <script>
+        function addToCart(productId, quantity = 1) {
+            fetch("{{ route('cart.add') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: quantity,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); // Debug
+                    if (data.status === 'success') {
+                        updateSideCartUI(data.cart_items);
+                    } else {
+                        alert('Something went wrong.');
+                    }
+                })
+                .catch(error => {
+                    console.error("Cart error:", error);
+                });
+        }
+
+        function closeSideCart() {
+            document.getElementById('side-cart').classList.add('hidden');
+        }
+
+        function updateSideCartUI(cartItems) {
+            const container = document.getElementById('side-cart-items');
+            // console.log(document.getElementById('side-cart-items'));
+
+            container.innerHTML = '';
+
+            let total = 0;
+
+            for (let key in cartItems) {
+                const item = cartItems[key];
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+
+                container.innerHTML += `
+                    <li class="border-b py-2">
+                        <div class="font-medium">${item.name}</div>
+                        <div class="text-sm text-gray-600">৳${item.price} × ${item.quantity}</div>
+                    </li>
+                `;
+            }
+
+            document.getElementById('side-cart-total').innerText = `Total: ৳${total.toFixed(2)}`;
+            document.getElementById('side-cart').classList.remove('hidden');
+        }
+    </script>
+
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('filterForm');
             const productsList = document.getElementById('productsList');
@@ -212,7 +292,7 @@
         });
     </script>
 
-
+    @stack('scripts')
 </body>
 
 </html>

@@ -22,8 +22,27 @@
                             <span class="line-through text-red-500 text-sm">৳{{ $product->price }}</span>
                         @endif
                     </p>
-                    <a href="{{ route('product.show', $product->id) }}"
-                        class="mt-2 inline-block text-blue-600 hover:underline">View Details</a>
+                    <div class="mt-2 flex items-center justify-between">
+                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View Details</a>
+                        <div>
+                            <button onclick="addToCart({{ $product->id }})" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
+                            @auth
+                                @if ($product->isWishlisted())
+                                    <form class="inline" method="POST" action="{{ route('wishlist.destroy', $product) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" title="Remove from Wishlist" class="text-red-500">♥</button>
+                                    </form>
+                                @else
+                                    <form class="inline" method="POST" action="{{ route('wishlist.store', $product) }}">
+                                        @csrf
+                                        <button type="submit" title="Add to Wishlist" class="text-gray-400">♡</button>
+                                    </form>
+                                @endif
+                            @endauth
+                        </div>
+                    </div>
+
                 </div>
             @endforeach
         </div>
@@ -42,8 +61,26 @@
                                 class="h-48 w-full object-cover rounded">
                             <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
                             <p class="text-gray-600">৳{{ $product->price }}</p>
-                            <a href="{{ route('product.show', $product->id) }}"
-                                class="mt-2 inline-block text-blue-600 hover:underline">View Details</a>
+                            <div class="mt-2 flex items-center justify-between">
+                                <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View Details</a>
+                                <div>
+                                    <button onclick="addToCart({{ $product->id }})" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
+                                    @auth
+                                        @if ($product->isWishlisted())
+                                            <form class="inline" method="POST" action="{{ route('wishlist.destroy', $product) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" title="Remove from Wishlist" class="text-red-500">♥</button>
+                                            </form>
+                                        @else
+                                            <form class="inline" method="POST" action="{{ route('wishlist.store', $product) }}">
+                                                @csrf
+                                                <button type="submit" title="Add to Wishlist" class="text-gray-400">♡</button>
+                                            </form>
+                                        @endif
+                                    @endauth
+                                </div>
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -66,8 +103,26 @@
                         class="h-48 w-full object-cover rounded">
                     <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
                     <p class="text-gray-600">৳{{ $product->price }}</p>
-                    <a href="{{ route('product.show', $product->id) }}"
-                        class="mt-2 inline-block text-blue-600 hover:underline">View Details</a>
+                    <div class="mt-2 flex items-center justify-between">
+                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View Details</a>
+                        <div>
+                            <button onclick="addToCart({{ $product->id }})" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
+                            @auth
+                                @if ($product->isWishlisted())
+                                    <form class="inline" method="POST" action="{{ route('wishlist.destroy', $product) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" title="Remove from Wishlist" class="text-red-500">♥</button>
+                                    </form>
+                                @else
+                                    <form class="inline" method="POST" action="{{ route('wishlist.store', $product) }}">
+                                        @csrf
+                                        <button type="submit" title="Add to Wishlist" class="text-gray-400">♡</button>
+                                    </form>
+                                @endif
+                            @endauth
+                        </div>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -83,8 +138,26 @@
                         class="h-48 w-full object-cover rounded">
                     <h2 class="mt-2 text-lg font-semibold">{{ $product->name }}</h2>
                     <p class="text-gray-600">৳{{ $product->price }}</p>
-                    <a href="{{ route('product.show', $product->id) }}"
-                        class="mt-2 inline-block text-blue-600 hover:underline">View Details</a>
+                    <div class="mt-2 flex items-center justify-between">
+                        <a href="{{ route('product.show', $product->id) }}" class="text-blue-600 hover:underline">View Details</a>
+                        <div>
+                            <button onclick="addToCart({{ $product->id }})" class="bg-blue-600 text-white px-3 py-1 rounded">Add to Cart</button>
+                            @auth
+                                @if ($product->isWishlisted())
+                                    <form class="inline" method="POST" action="{{ route('wishlist.destroy', $product) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" title="Remove from Wishlist" class="text-red-500">♥</button>
+                                    </form>
+                                @else
+                                    <form class="inline" method="POST" action="{{ route('wishlist.store', $product) }}">
+                                        @csrf
+                                        <button type="submit" title="Add to Wishlist" class="text-gray-400">♡</button>
+                                    </form>
+                                @endif
+                            @endauth
+                        </div>
+                    </div>
                 </div>
             @endforeach
         </div>

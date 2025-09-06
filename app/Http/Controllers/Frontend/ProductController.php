@@ -36,22 +36,38 @@ class ProductController extends Controller
     {
         $categories = Category::all();
 
-        $products = Product::query()
-            ->when($request->search, fn($query) => $query->where('name', 'like', '%' . $request->search . '%'))
+        $productsQuery = Product::query()
             ->when($request->category_id, fn($query) => $query->where('category_id', $request->category_id))
             ->when($request->min_price, fn($query) => $query->where('price', '>=', $request->min_price))
-            ->when($request->max_price, fn($query) => $query->where('price', '<=', $request->max_price))
-            ->latest()
-            ->paginate(12);
+            ->when($request->max_price, fn($query) => $query->where('price', '<=', $request->max_price));
 
+        // Handle sorting
+        $sort = $request->input('sort', 'latest');
+        if ($sort === 'price_asc') {
+            $productsQuery->orderBy('price', 'asc');
+        } elseif ($sort === 'price_desc') {
+            $productsQuery->orderBy('price', 'desc');
+        } else {
+            $productsQuery->latest();
+        }
+
+        $products = $productsQuery->paginate(12)->withQueryString();
 
         if ($request->ajax()) {
             return view('frontend.filter.index', compact('products'))->render();
         }
 
+        return view('frontend.products.shop', compact('products', 'categories'));
+    }
 
-        // $products = $products->paginate(12)->withQueryString(); 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
 
-        // return view('frontend.products.index', compact('products'));
+        $products = Product::where('name', 'LIKE', "%{$query}%")
+                             ->orWhere('description', 'LIKE', "%{$query}%")
+                             ->paginate(12);
+
+        return view('frontend.search.results', compact('products', 'query'));
     }
 }
