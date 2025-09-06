@@ -18,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Widgets\SalesChartWidget;  // Import your custom widget
+use App\Http\Middleware\AdminAccess; // Add this line
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -52,10 +53,10 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                AdminAccess::class, // Add this line
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->canAccessPanel(fn (): bool => auth()->user()->is_admin);
+            ]);
     }
 }
