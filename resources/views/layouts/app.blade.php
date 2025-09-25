@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Sallu's Shop</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -73,7 +75,7 @@
         <!-- Mobile Menu -->
         <div :class="{ 'block': open, 'hidden': !open }"
             class="hidden md:hidden bg-white shadow-lg px-4 pt-4 pb-2 space-y-3">
-            <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600 block text-center">Sallu's Shop</a>
+            {{-- <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600 block text-center">Sallu's Shop</a> --}}
 
             <!-- Mobile Auth + Cart -->
             <div class="flex justify-center gap-2">
@@ -95,7 +97,7 @@
             <div class="mt-2">
                 <x-search-bar />
             </div>
-            <div class="mt-2 bg-gray-50 p-3 rounded-lg">
+            {{-- <div class="mt-2 bg-gray-50 p-3 rounded-lg">
                 <form id="mobileFilterForm" class="grid grid-cols-1 gap-2">
                     <input type="text" name="search" placeholder="Search product..."
                         class="border p-2 rounded w-full" />
@@ -109,7 +111,7 @@
                     <input type="number" name="max_price" placeholder="Max Price" class="border p-2 rounded w-full" />
                     <button type="submit" class="bg-blue-600 text-white p-2 rounded w-full">Filter</button>
                 </form>
-            </div>
+            </div> --}}
         </div>
     </nav>
 
