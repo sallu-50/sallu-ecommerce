@@ -137,7 +137,46 @@
     </main>
 
     <!-- Toast Container -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2">
+
+
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- Logo / About -->
+            <div>
+                <h2 class="text-xl font-bold text-white">Sallu's Shop</h2>
+                <p class="mt-2 text-sm text-gray-400">
+                    আপনার বিশ্বস্ত অনলাইন শপ। মানসম্মত প্রোডাক্ট, সাশ্রয়ী দামে।
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg font-semibold text-white mb-2">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="{{ route('home') }}" class="hover:text-white">Home</a></li>
+                    <li><a href="{{ route('filter.index') }}" class="hover:text-white">Shop</a></li>
+                    <li><a href="{{ route('cart.view') }}" class="hover:text-white">Cart</a></li>
+                    <li><a href="{{ route('login') }}" class="hover:text-white">Login</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h3 class="text-lg font-semibold text-white mb-2">Contact</h3>
+                <p>Email: <a href="mailto:info@sallu-shop.com" class="hover:text-white">info@sallu-shop.com</a></p>
+                <p>Phone: +880 1234-567890</p>
+                <p>Address: Dhaka, Bangladesh</p>
+            </div>
+        </div>
+        <div class="bg-gray-900 text-center text-sm text-gray-500 py-3">
+            © {{ date('Y') }} Sallu's Shop. All rights reserved.
+        </div>
+    </footer>
+
 
     <script>
         // Toast
