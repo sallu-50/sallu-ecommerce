@@ -11,11 +11,11 @@
             <p class="mt-2 text-gray-700">{{ $product->description }}</p>
             <p class="mt-4 text-xl font-semibold text-green-600">৳{{ $product->price }}</p>
 
-            <div class="mt-4 flex items-center space-x-4">
+            <div class="mt-4 flex flex-wrap items-center gap-4">
                 <form method="POST" action="{{ route('cart.add') }}" class="space-y-2">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <div class="flex items-center border rounded p-1 w-32">
+                    <div class="flex items-center border rounded p-1 w-24 sm:w-32">
                         <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
                             class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-8 h-8 rounded-l focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">-</button>
                         <input type="number" name="quantity" value="1" min="1"

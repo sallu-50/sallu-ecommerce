@@ -5,47 +5,49 @@
         <h1 class="text-2xl font-bold mb-4">Your Cart</h1>
 
         @if (count($cart) > 0)
-            <table class="w-full table-auto border">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="p-2">Product</th>
-                        <th class="p-2">Price</th>
-                        <th class="p-2">Quantity</th>
-                        <th class="p-2">Subtotal</th>
-                        <th class="p-2">Actions</th> <!-- New column -->
-                    </tr>
-                </thead>
-                <tbody>
-                    @php $total = 0; @endphp
-                    @foreach ($cart as $productId => $item)
-                        @php
-                            $subtotal = $item['price'] * $item['quantity'];
-                            $total += $subtotal;
-                        @endphp
-                        <tr class="border-b">
-                            <td class="p-2">{{ $item['name'] }}</td>
-                            <td class="p-2">৳{{ number_format($item['price'], 2) }}</td>
-                            <td class="p-2">
-                                <div class="flex items-center border rounded p-1 w-24 mx-auto">
-                                    <button type="button" onclick="updateCartQuantity({{ $productId }}, -1)"
-                                        class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-6 h-6 rounded-l focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">-</button>
-                                    <input type="number" value="{{ $item['quantity'] }}" min="1"
-                                        class="w-full text-center bg-transparent focus:outline-none" readonly>
-                                    <button type="button" onclick="updateCartQuantity({{ $productId }}, 1)"
-                                        class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-6 h-6 rounded-r focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">+</button>
-                                </div>
-                            </td>
-                            <td class="p-2">৳{{ number_format($subtotal, 2) }}</td>
-                            <td class="p-2">
-                                <button type="button" onclick="updateCartQuantity({{ $productId }}, 0)"
-                                    class="text-red-500 hover:text-red-700 text-sm">Remove</button>
-                            </td>
+            <div class="overflow-x-auto">
+                <table class="w-full table-auto border">
+                    <thead class="bg-gray-100 hidden md:table-header-group">
+                        <tr>
+                            <th class="p-2">Product</th>
+                            <th class="p-2">Price</th>
+                            <th class="p-2">Quantity</th>
+                            <th class="p-2">Subtotal</th>
+                            <th class="p-2">Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @php $total = 0; @endphp
+                        @foreach ($cart as $productId => $item)
+                            @php
+                                $subtotal = $item['price'] * $item['quantity'];
+                                $total += $subtotal;
+                            @endphp
+                            <tr class="border-b block md:table-row">
+                                <td class="p-2 block md:table-cell" data-label="Product">{{ $item['name'] }}</td>
+                                <td class="p-2 block md:table-cell" data-label="Price">৳{{ number_format($item['price'], 2) }}</td>
+                                <td class="p-2 block md:table-cell" data-label="Quantity">
+                                    <div class="flex items-center border rounded p-1 w-24 mx-auto">
+                                        <button type="button" onclick="updateCartQuantity({{ $productId }}, -1)"
+                                            class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-6 h-6 rounded-l focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">-</button>
+                                        <input type="number" value="{{ $item['quantity'] }}" min="1"
+                                            class="w-full text-center bg-transparent focus:outline-none" readonly>
+                                        <button type="button" onclick="updateCartQuantity({{ $productId }}, 1)"
+                                            class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-6 h-6 rounded-r focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">+</button>
+                                    </div>
+                                </td>
+                                <td class="p-2 block md:table-cell" data-label="Subtotal">৳{{ number_format($subtotal, 2) }}</td>
+                                <td class="p-2 block md:table-cell" data-label="Actions">
+                                    <button type="button" onclick="updateCartQuantity({{ $productId }}, 0)"
+                                        class="text-red-500 hover:text-red-700 text-sm">Remove</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-            <div class="mt-4 flex justify-between items-center">
+            <div class="mt-4 flex flex-col md:flex-row justify-between items-center gap-4">
                 <form action="{{ route('cart.clear') }}" method="POST">
                     @csrf
                     @method('DELETE')
