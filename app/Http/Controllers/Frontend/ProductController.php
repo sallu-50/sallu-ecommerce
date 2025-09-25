@@ -9,22 +9,40 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        // Featured products
-        $featuredProducts = Product::where('is_featured', true)->take(8)->get();
+  public function index()
+{
+    // Featured products
+    $featuredProducts = Product::where('is_featured', true)
+                                ->where('status', 1)
+                                ->take(8)
+                                ->get();
 
-        // Categories with products
-        $categories = Category::with('products')->get();
+    // Categories with products (only active products)
+    $categories = Category::with(['products' => function($query) {
+        $query->where('status', 1);
+    }])->get();
 
-        // Best selling products
-        $bestSellingProducts = Product::orderBy('sold', 'desc')->take(8)->get();
+    // Best selling products
+    $bestSellingProducts = Product::where('status', 1)
+                                  ->orderBy('sold', 'desc')
+                                  ->take(8)
+                                  ->get();
 
-        // New arrivals (latest products)
-        $newArrivals = Product::latest()->take(8)->get();
+    // New arrivals
+    $newArrivals = Product::where('status', 1)
+                          ->latest()
+                          ->take(8)
+                          ->get();
 
-        return view('frontend.products.index', compact('featuredProducts', 'categories', 'bestSellingProducts', 'newArrivals'));
-    }
+    return view('frontend.products.index', compact(
+        'featuredProducts', 
+        'categories', 
+        'bestSellingProducts', 
+        'newArrivals'
+    ));
+}
+
+
     public function show($id)
     {
         $product = Product::findOrFail($id);
