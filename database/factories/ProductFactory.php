@@ -23,7 +23,7 @@ class ProductFactory extends Factory
             'description' => $this->faker->paragraph,
             'price' => $this->faker->randomFloat(2, 10, 1000),
             'stock' => $this->faker->numberBetween(0, 100),
-            'image' => $this->faker->imageUrl(),
+            'image' => 'https://picsum.photos/seed/' . $this->faker->unique()->word . '/640/480',
             'is_featured' => $this->faker->boolean,
             'discount_price' => $this->faker->optional()->randomFloat(2, 5, 500),
         ];
