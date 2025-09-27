@@ -31,8 +31,17 @@ class Product extends Model
         return auth()->check() && auth()->user()->wishlistProducts()->where('product_id', $this->id)->exists();
     }
 
-    public function getImageUrlAttribute()
-    {
-        return $this->image ? asset('storage/' . $this->image) : asset('storage/placeholders/no_image.png');
+   public function getImageUrlAttribute()
+{
+    // যদি image ফিল্ড already full url হয় (http/https দিয়ে শুরু)
+    if ($this->image && preg_match('/^https?:\/\//', $this->image)) {
+        return $this->image;
     }
+
+    // যদি image local storage এ থাকে
+    return $this->image 
+        ? asset('storage/' . $this->image) 
+        : asset('storage/placeholders/no_image.png');
+}
+
 }
