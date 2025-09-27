@@ -16,6 +16,8 @@
                         class="h-40 sm:h-48 w-full object-cover rounded-t-xl">
 
 
+
+
                     <div class="p-4 flex flex-col justify-between">
                         <h2 class="text-lg font-semibold truncate">{{ $product->name }}</h2>
                         <p class="text-gray-700 mt-1">
