@@ -3,7 +3,7 @@
 @section('content')
     <!-- Featured Products -->
     <div class="max-w-7xl mx-auto py-6 px-4">
-        <h1 class="text-2xl sm:text-3xl font-bold mb-6">🌟 Featured Products</h1>
+        <h1 class="text-2xl sm:text-3xl font-bold mb-6">🌟 Featured Products </h1>
         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach ($featuredProducts as $product)
                 <div class="bg-white border rounded-xl shadow hover:shadow-lg transition relative overflow-hidden">
@@ -146,6 +146,7 @@
 
     <!-- New Arrivals -->
     <div class="max-w-7xl mx-auto py-6 px-4">
+        <h1 class="text-2xl sm:text-3xl font-bold mb-6">🆕 New Arrivals</h1>
         <h1 class="text-2xl sm:text-3xl font-bold mb-6">🆕 New Arrivals</h1>
         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach ($newArrivals as $product)
