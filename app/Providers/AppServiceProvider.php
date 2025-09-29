@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
             $cartCount = collect(session('cart', []))->sum('quantity');
             $view->with('cartCount', $cartCount);
         });
+        
     }
     
 }
