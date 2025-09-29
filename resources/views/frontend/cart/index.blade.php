@@ -25,7 +25,8 @@
                             @endphp
                             <tr class="border-b block md:table-row">
                                 <td class="p-2 block md:table-cell" data-label="Product">{{ $item['name'] }}</td>
-                                <td class="p-2 block md:table-cell" data-label="Price">৳{{ number_format($item['price'], 2) }}</td>
+                                <td class="p-2 block md:table-cell" data-label="Price">
+                                    ৳{{ number_format($item['price'], 2) }}</td>
                                 <td class="p-2 block md:table-cell" data-label="Quantity">
                                     <div class="flex items-center border rounded p-1 w-24 mx-auto">
                                         <button type="button" onclick="updateCartQuantity({{ $productId }}, -1)"
@@ -36,7 +37,8 @@
                                             class="flex-shrink-0 bg-gray-200 text-gray-700 hover:bg-gray-300 w-6 h-6 rounded-r focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">+</button>
                                     </div>
                                 </td>
-                                <td class="p-2 block md:table-cell" data-label="Subtotal">৳{{ number_format($subtotal, 2) }}</td>
+                                <td class="p-2 block md:table-cell" data-label="Subtotal">৳{{ number_format($subtotal, 2) }}
+                                </td>
                                 <td class="p-2 block md:table-cell" data-label="Actions">
                                     <button type="button" onclick="updateCartQuantity({{ $productId }}, 0)"
                                         class="text-red-500 hover:text-red-700 text-sm">Remove</button>
@@ -51,7 +53,8 @@
                 <form action="{{ route('cart.clear') }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Clear Cart</button>
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Clear
+                        Cart</button>
                 </form>
                 <a href="{{ route('filter.index') }}" class="text-blue-600 hover:underline">Continue Shopping</a>
             </div>
@@ -71,8 +74,10 @@
                 @else
                     <form action="{{ route('coupon.store') }}" method="POST" class="flex">
                         @csrf
-                        <input type="text" name="code" placeholder="Enter coupon code" class="border rounded-l p-2 w-full" required>
-                        <button type="submit" class="bg-blue-600 text-white px-4 rounded-r hover:bg-blue-700">Apply</button>
+                        <input type="text" name="code" placeholder="Enter coupon code"
+                            class="border rounded-l p-2 w-full" required>
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-4 rounded-r hover:bg-blue-700">Apply</button>
                     </form>
                 @endif
             </div>
@@ -106,14 +111,15 @@
         @else
             <div class="text-center py-10">
                 <p class="text-lg text-gray-600 mb-4">Your cart is empty.</p>
-                <a href="{{ route('filter.index') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 text-lg">Continue Shopping</a>
+                <a href="{{ route('filter.index') }}"
+                    class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 text-lg">Continue Shopping</a>
             </div>
         @endif
     </div>
 
     <script>
         async function updateCartQuantity(productId, change) {
-            const inputElement = document.querySelector(`input[type="number"][value="${document.querySelector(`button[onclick="updateCartQuantity(${productId}, ${change})`]
+                const inputElement = document.querySelector(`input[type="number"][value="${document.querySelector(`button[onclick="updateCartQuantity(${productId}, ${change})`]
 `).parentNode.querySelector('input[type="number"]').value}"]`);
             let newQuantity = parseInt(inputElement.value) + change;
 
@@ -123,7 +129,7 @@
             inputElement.value = newQuantity;
 
             try {
-                const response = await fetch('{{ route('cart.updateQuantity') }}', {
+                                const response = await fetch('/cart/add', {   // ← relative path
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -149,7 +155,11 @@
                         window.location.reload(); // Reload if cart becomes empty
                     } else {
                         // Update totals
-                        subtotalElement.innerHTML = `Subtotal: ৳${data.subtotal.toFixed(2)}`;
+                        subtotalElement.innerHTML = `
+                        Subtotal: ৳$ {
+                            data.subtotal.toFixed(2)
+                        }
+                        `;
                         if (data.discount > 0) {
                             if (!discountElement) {
                                 // Create discount element if it doesn't exist
@@ -158,30 +168,42 @@
                                 subtotalElement.parentNode.insertBefore(newDiscountP, totalElement);
                                 discountElement = newDiscountP;
                             }
-                            discountElement.innerHTML = `Discount: - ৳${data.discount.toFixed(2)}`;
+                            discountElement.innerHTML = `
+                        Discount: -৳$ {
+                            data.discount.toFixed(2)
+                        }
+                        `;
                         } else if (discountElement) {
                             discountElement.remove(); // Remove if discount is 0
                         }
-                        totalElement.innerHTML = `Total: ৳${data.newTotal.toFixed(2)}`;
+                        totalElement.innerHTML = `
+                        Total: ৳$ {
+                            data.newTotal.toFixed(2)
+                        }
+                        `;
 
                         // Update individual item subtotal in the table
                         const currentRow = inputElement.closest('tr');
                         const currentSubtotalCell = currentRow.querySelector('td:last-child');
                         const currentPrice = parseFloat(currentRow.querySelector('td:nth-child(2)').innerText.replace('৳', ''));
-                        currentSubtotalCell.innerText = `৳${(currentPrice * newQuantity).toFixed(2)}`;
+                        currentSubtotalCell.innerText = `৳
+                        $ {
+                            (currentPrice * newQuantity).toFixed(2)
+                        }
+                        `;
+                                }
+
+                                // Update cart count in navbar
+                                document.getElementById('cart-count').innerText = data.cart_count;
+
+                                showToast('Cart updated successfully!', 'success');
+                            } else {
+                                showToast('Failed to update cart.', 'error');
+                            }
+                        } catch (error) {
+                            console.error('Error updating cart:', error);
+                            showToast('An error occurred.', 'error');
+                        }
                     }
-
-                    // Update cart count in navbar
-                    document.getElementById('cart-count').innerText = data.cart_count;
-
-                    showToast('Cart updated successfully!', 'success');
-                } else {
-                    showToast('Failed to update cart.', 'error');
-                }
-            } catch (error) {
-                console.error('Error updating cart:', error);
-                showToast('An error occurred.', 'error');
-            }
-        }
     </script>
 @endsection
