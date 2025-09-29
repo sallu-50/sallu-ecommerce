@@ -220,7 +220,7 @@
 
         // Add to Cart (AJAX)
         function addToCart(productId, quantity = 1) {
-            fetch("{{ route('cart.add') }}", {
+            fetch('/cart/add', { // ← relative path
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
