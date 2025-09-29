@@ -25,7 +25,11 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $view->with('categories', Category::all());
         });
-        
+
+        View::composer('layouts.app', function ($view) {
+            $cartCount = collect(session('cart', []))->sum('quantity');
+            $view->with('cartCount', $cartCount);
+        });
     }
     
 }

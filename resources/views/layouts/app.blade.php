@@ -52,7 +52,7 @@
                     <a href="{{ route('cart.view') }}"
                         class="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
                         Cart <span id="cart-count"
-                            class="ml-1 px-2 py-0.5 bg-white text-green-600 rounded-full text-xs font-bold">0</span>
+                            class="ml-1 px-2 py-0.5 bg-white text-green-600 rounded-full text-xs font-bold">{{ $cartCount ?? 0 }}</span>
                     </a>
                 </div>
 
@@ -91,7 +91,7 @@
                 @endguest
                 <a href="{{ route('cart.view') }}" class="px-3 py-1 bg-green-600 text-white rounded-md">
                     Cart <span id="cart-count-mobile"
-                        class="ml-1 px-2 py-0.5 bg-white text-green-600 rounded-full text-xs font-bold">0</span>
+                        class="ml-1 px-2 py-0.5 bg-white text-green-600 rounded-full text-xs font-bold">{{ $cartCount ?? 0 }}</span>
                 </a>
             </div>
 
@@ -245,6 +245,23 @@
                     showToast('Error adding to cart.', 'error');
                 });
         }
+
+        // Fetch cart count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/cart/json')
+                .then(res => res.json())
+                .then(data => {
+                    const cartCountSpan = document.getElementById('cart-count');
+                    const cartCountMobile = document.getElementById('cart-count-mobile');
+                    if (cartCountSpan) {
+                        cartCountSpan.innerText = data.cart_count || 0;
+                    }
+                    if (cartCountMobile) {
+                        cartCountMobile.innerText = data.cart_count || 0;
+                    }
+                })
+                .catch(err => console.error('Error fetching cart count:', err));
+        });
     </script>
 
     @stack('scripts')
